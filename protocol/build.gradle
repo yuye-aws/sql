@@ -26,7 +26,42 @@ plugins {
     id 'java'
     id "io.freefair.lombok"
     id 'jacoco'
+    id 'com.diffplug.spotless' version '6.19.0'
     id 'maven-publish'
+}
+
+publishing {
+    publications {
+        pluginZip(MavenPublication) { publication ->
+            pom {
+                name = 'opensearch-sql'
+                description = 'OpenSearch SQL'
+                groupId = "org.opensearch.plugin"
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'OpenSearch'
+                        url = 'https://github.com/opensearch-project/sql'
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "Snapshots" //  optional target repository name
+            url = "https://aws.oss.sonatype.org/content/repositories/snapshots"
+            credentials {
+                username "$System.env.SONATYPE_USERNAME"
+                password "$System.env.SONATYPE_PASSWORD"
+            }
+        }
+    }
 }
 
 dependencies {
